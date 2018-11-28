@@ -1,5 +1,7 @@
-import React from 'react'
-import "./AddAuthorForm.css"
+import React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import "./AddAuthorForm.css";
 
 class AuthorForm extends React.Component {
     constructor(props) {
@@ -30,7 +32,7 @@ class AuthorForm extends React.Component {
     handleAddBook(event) {
         this.setState({
             books: this.state.books.concat([this.state.bookTemp]),
-            bookTemp: ""
+            bookTemp: ''
         });
     }
 
@@ -57,7 +59,7 @@ class AuthorForm extends React.Component {
     }
 }
 
-function AddAuthorForm({match, onAddAuthor}) {
+function AddAuthorForm({ match, onAddAuthor }) {
     return (
         <div className="AddAuthorForm">
             <h1>Add Author</h1>
@@ -66,4 +68,13 @@ function AddAuthorForm({match, onAddAuthor}) {
     );
 }
 
-export default AddAuthorForm;
+function mapDispatchToProps(dispatch, props) {
+    return {
+        onAddAuthor: (author) => {
+            dispatch({ type: 'ADD_AUTHOR', author });
+            props.history.push('/');
+        }
+    };
+}
+
+export default withRouter(connect(() => { }, mapDispatchToProps)(AddAuthorForm));
